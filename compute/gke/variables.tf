@@ -1,4 +1,4 @@
-variable "project_name" {
+variable "cluster_name" {
   description = "The name of the project to which resources will be associated."
   type        = string
 }
@@ -22,4 +22,12 @@ variable "node_count" {
   description = "The number of nodes in the GKE node pool."
   type        = number
   default     = 3
+}
+variable "network" {
+  description = "The VPC network name for the GKE cluster."
+  type        = string
+}
+variable "subnetwork" {
+  description = "The subnetwork name for the GKE cluster."
+  type        = string
 }

@@ -1,5 +1,5 @@
 resource "google_container_cluster" "primary" {
-  name     = "${var.project_name}-cluster"
+  name     = "${var.cluster_name}-cluster"
   location = var.region
 
   # We can't create a cluster with no node pool defined, but we want to only use
@@ -8,16 +8,17 @@ resource "google_container_cluster" "primary" {
   remove_default_node_pool = true
   initial_node_count       = 1
 
-  network    = google_compute_network.vpc.name
-  subnetwork = google_compute_subnetwork.subnet.name
+  network    = var.network
+  subnetwork = var.subnetwork
   ip_allocation_policy {
-    cluster_secondary_range_name  = google_compute_subnetwork.subnet.secondary_ip_range[0].range_name
-    services_secondary_range_name = google_compute_subnetwork.subnet.secondary_ip_range[1].range_name
+    cluster_secondary_range_name  = "pods"
+    services_secondary_range_name = "services"
   }
+  
 }
 
-resource "google_conatiner_node_pool" "primary_nodes" {
-  name       = "${var.project_name}-node-pool"
+resource "google_container_node_pool" "primary_nodes" {
+  name       = "${var.cluster_name}-node-pool"
   location   = var.region
   cluster    = google_container_cluster.primary.name
   node_count = var.node_count
@@ -33,7 +34,7 @@ resource "google_conatiner_node_pool" "primary_nodes" {
       env = var.project_id
     }
   # preemptible  = true
-    tags         = ["gke-node", "${var.project_name}-gke"]
+    tags         = ["gke-node", "${var.cluster_name}-gke"]
     metadata = {
         disable-legacy-endpoints = "true"
     }

@@ -1,4 +1,4 @@
-variable "project_name" {
+variable "vpc_name" {
   description = "The name of the project to which resources will be associated."
   type        = string  
   

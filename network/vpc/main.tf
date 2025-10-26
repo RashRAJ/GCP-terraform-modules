@@ -1,11 +1,10 @@
 resource "google_compute_network" "vpc" {
-  name                    = "${var.project_name}-vpc"
+  name                    = "${var.vpc_name}-vpc"
   auto_create_subnetworks = false
-  
 }
 
 resource "google_compute_subnetwork" "subnet" {
-  name          = "${var.project_name}-subnet"
+  name          = "${var.vpc_name}-subnet"
   ip_cidr_range = "${var.subnet_cidr}"
   region        = var.region
   network       = google_compute_network.vpc.name
