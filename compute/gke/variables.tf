@@ -13,15 +13,35 @@ variable "region" {
   type        = string
   default     = "us-central1"
 }
-variable "machine_type" {
+variable "x86machine_type" {
   description = "The machine type to use for the GKE node pool."
   type        = string
   default     = "e2-medium"
 }
-variable "node_count" {
-  description = "The number of nodes in the GKE node pool."
+variable "x86node_count" {
+  description = "The number of nodes in the x86 node pool."
   type        = number
-  default     = 3
+  default     = 1
+}
+variable "arm_node_count" {
+  description = "The number of nodes in the ARM64 node pool."
+  type        = number
+  default     = 1
+}
+variable "create_x86_pool" {
+  description = "Whether to create the x86 node pool."
+  type        = bool
+  default     = true
+}
+variable "create_arm64_pool" {
+  description = "Whether to create the ARM64 node pool."
+  type        = bool
+  default     = false
+}
+variable "arm_machine_type" {
+  description = "The machine type to use for the ARM64 GKE node pool."
+  type        = string
+  default     = "t2a-standard-2"
 }
 variable "network" {
   description = "The VPC network name for the GKE cluster."

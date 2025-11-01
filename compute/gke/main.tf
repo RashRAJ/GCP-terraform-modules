@@ -7,7 +7,7 @@ resource "google_container_cluster" "primary" {
   # node pool and immediately delete it.
   remove_default_node_pool = true
   initial_node_count       = 1
-
+  deletion_protection = false
   network    = var.network
   subnetwork = var.subnetwork
   ip_allocation_policy {
@@ -17,14 +17,16 @@ resource "google_container_cluster" "primary" {
   
 }
 
-resource "google_container_node_pool" "primary_nodes" {
+resource "google_container_node_pool" "x86_pool" {
+  count      = var.create_x86_pool ? 1 : 0
   name       = "${var.cluster_name}-node-pool"
   location   = var.region
   cluster    = google_container_cluster.primary.name
-  node_count = var.node_count
+  node_count = var.x86node_count
 
   node_config {
-    machine_type = var.machine_type
+    machine_type = var.x86machine_type
+    disk_size_gb = 80
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform",
       "https://www.googleapis.com/auth/monitoring",
@@ -39,4 +41,26 @@ resource "google_container_node_pool" "primary_nodes" {
         disable-legacy-endpoints = "true"
     }
   }
+}
+
+resource "google_container_node_pool" "arm64_pool" {
+  count      = var.create_arm64_pool ? 1 : 0
+  name       = "arm64-node-pool"
+  cluster    = google_container_cluster.primary.name
+  location   = var.region
+  node_count = var.arm_node_count
+
+  node_config {
+    machine_type = var.arm_machine_type
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/cloud-platform",
+    ]
+    tags = ["arm64-node"]
+  }
+
+  management {
+    auto_repair  = true
+    auto_upgrade = true
+  }
+  
 }
