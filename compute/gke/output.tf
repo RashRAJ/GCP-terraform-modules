@@ -8,14 +8,9 @@ output "kubernetes_cluster_host" {
   description = "GKE Cluster Host"
 }
 
-output "endpoint_ip" {
-  value       = google_compute_address.endpoint_ip.address
-  description = "Static IP address for the GKE Ingress"
-}
-
-output "token" {
-  value       = google_container_cluster.primary.master_auth[0].token
-  description = "Kubernetes authentication token"
+output "endpoint" {
+  value       = google_container_cluster.primary.endpoint
+  description = "GKE Cluster Endpoint"
 }
 
 output "cluster_ca_certificate" {
