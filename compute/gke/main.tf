@@ -1,5 +1,6 @@
 resource "google_container_cluster" "primary" {
   name     = "${var.cluster_name}-cluster"
+  project  = var.project_id
   location = var.region
 
   # We can't create a cluster with no node pool defined, but we want to only use
@@ -45,6 +46,7 @@ resource "google_container_node_pool" "x86_pool" {
 
 resource "google_container_node_pool" "arm64_pool" {
   count      = var.create_arm64_pool ? 1 : 0
+  project = var.project_id
   name       = "arm64-node-pool"
   cluster    = google_container_cluster.primary.name
   location   = var.region

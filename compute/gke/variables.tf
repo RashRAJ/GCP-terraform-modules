@@ -31,7 +31,7 @@ variable "arm_node_count" {
 variable "create_x86_pool" {
   description = "Whether to create the x86 node pool."
   type        = bool
-  default     = true
+  default     = false
 }
 variable "create_arm64_pool" {
   description = "Whether to create the ARM64 node pool."
