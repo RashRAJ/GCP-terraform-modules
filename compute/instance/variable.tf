@@ -38,3 +38,9 @@ variable "labels" {
   type        = map(string)
   default     = {}
 }
+
+variable "subnetwork" {
+  description = "The subnetwork to attach to the instance."
+  type        = string
+  default     = null
+}
