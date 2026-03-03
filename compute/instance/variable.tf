@@ -11,7 +11,7 @@ variable "machine_type" {
 variable "zone" {
   description = "The zone to deploy the instance in."
   type        = string
-  default     = "us-central1-a"
+  default     = null
 }
 variable "region" {
   description = "The region to deploy the instance in."
